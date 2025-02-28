@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:plant_spotter_lab2/pages/register_page.dart';
+
+import '../services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,6 +13,22 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
+  bool isValidEmail(String email) {
+    RegExp emailRegex = RegExp(
+      r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+',
+      caseSensitive: false,
+    );
+
+    return emailRegex.hasMatch(email);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +51,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 130),
               TextFormField(
                 controller: _emailController,
+                textCapitalization: TextCapitalization.none,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -56,6 +76,8 @@ class _LoginPageState extends State<LoginPage> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter an email.';
+                  } else if (!isValidEmail(value)) {
+                    return 'Please enter a valid email address.';
                   }
                   return null;
                 },
@@ -88,6 +110,8 @@ class _LoginPageState extends State<LoginPage> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a password.';
+                  } else if (value.length < 8) {
+                    return 'Password should not have less than 8 characters.';
                   }
                   return null;
                 },
@@ -96,10 +120,13 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 width: 150,
                 child: TextButton(
-                  onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      // Proceed with registration logic
-                      context.push('/home');
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      await AuthService().login(_emailController.text, _passwordController.text, context);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Please fill input')),
+                      );
                     }
                   },
                   style: TextButton.styleFrom(
@@ -112,7 +139,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 8),
               TextButton(
-                onPressed: () => context.go('/register'),
+                // onPressed: () => context.go('/register'),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegisterPage())),
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.transparent,
                   foregroundColor: Color(0xFF6B8E58),

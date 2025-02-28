@@ -2,10 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:plant_spotter_lab2/providers/journal_provider.dart';
 import 'package:plant_spotter_lab2/router.dart';
-import 'package:plant_spotter_lab2/services/image_service.dart';
+import 'package:plant_spotter_lab2/providers/images_provider.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(PlantSpotterApp());
 }
 
@@ -15,7 +24,7 @@ class PlantSpotterApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => JournalProvider()),
-        ChangeNotifierProvider(create: (_) => ImageService()),
+        ChangeNotifierProvider(create: (_) => ImagesProvider()),
       ],
       child: MaterialApp.router(
         routerConfig: router,

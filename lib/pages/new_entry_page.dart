@@ -5,7 +5,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:plant_spotter_lab2/services/auth_service.dart';
 import 'package:provider/provider.dart';
 import '../providers/journal_provider.dart';
-import '../services/image_service.dart';
+import '../providers/images_provider.dart';
 
 class NewEntryPage extends StatefulWidget {
   @override
@@ -72,7 +72,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                         width: 200,
                         child: TextButton(
                           onPressed: () async {
-                            final imagePath = await ImageService().takePhoto();
+                            final imagePath = await ImagesProvider().takePhoto();
                             // if (imagePath != null) {
                             //   context.pop();
                             // }
@@ -293,7 +293,6 @@ class _NewEntryPageState extends State<NewEntryPage> {
                         LatLng(0, 0),
                         _descriptionController.text,
                         _isPublic,
-                        AuthService.getCurrentUser(),
                       );
 
                       context.pop();

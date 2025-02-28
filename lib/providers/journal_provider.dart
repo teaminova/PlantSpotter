@@ -91,33 +91,48 @@ class JournalProvider extends ChangeNotifier {
   //   ),
   // );
 
-  List<PlantEntry> getJournalEntries() {
-    String currentUser = AuthService.getCurrentUser();
+  Future<List<PlantEntry>> getJournalEntries() async {
+    String? currentUser = await AuthService().getUsername();
 
-    return this.entries
+    if (currentUser == null) return [];
+
+    return entries
         .where((e) => e.user == currentUser)
         .toList()
         ..sort((a, b) => b.date.compareTo(a.date));
   }
 
-  List<PlantEntry> getCommunityEntries() {
-    String currentUser = AuthService.getCurrentUser();
+  Future<List<PlantEntry>> getCommunityEntries() async {
+    String? currentUser = await AuthService().getUsername();
 
-    return this.entries
+    if (currentUser == null) {
+      return entries
+          .where((e) => e.isPublic)
+          .toList()
+        ..sort((a, b) => b.date.compareTo(a.date));
+    }
+
+    return entries
         .where((e) => e.user != currentUser && e.isPublic)
         .toList()
       ..sort((a, b) => b.date.compareTo(a.date));
   }
 
-  void addEntry(String image, String name, DateTime date, LatLng location, String description, bool isPublic, String user) {
+  Future<void> addEntry (String image, String name, DateTime date, LatLng location, String description, bool isPublic) async {
+    String? currentUser = await AuthService().getUsername();
+
+    if (currentUser == null) {
+      return;
+    }
+
     PlantEntry newEntry = PlantEntry(
-      image: image, // Placeholder image
+      image: image,
       name: name,
       date: date,
-      location: location, // Placeholder location
+      location: location,
       description: description,
       isPublic: isPublic,
-      user: user,
+      user: currentUser,
     );
 
     entries.add(newEntry);

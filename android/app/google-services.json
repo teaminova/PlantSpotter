@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "544193985076",
+    "project_id": "plant-spotter-app-c7a51",
+    "storage_bucket": "plant-spotter-app-c7a51.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:544193985076:android:c9da083d8862a11f806861",
+        "android_client_info": {
+          "package_name": "com.example.plant_spotter_lab2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL87ERZGDMYkr5AZnFM_3xisz7PyMNyAk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

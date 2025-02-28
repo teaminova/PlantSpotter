@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../services/image_service.dart';
+import '../providers/images_provider.dart';
 
 class GalleryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final images = ImageService().getGalleryImages();
+    final images = ImagesProvider().getGalleryImages();
 
     return Scaffold(
       appBar: AppBar(

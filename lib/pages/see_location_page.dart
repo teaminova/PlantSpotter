@@ -3,10 +3,18 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 
-class SeeLocationPage extends StatelessWidget {
+import '../utils/google_maps.dart';
+
+class SeeLocationPage extends StatefulWidget {
   final LatLng location;
 
   const SeeLocationPage({required this.location, Key? key}) : super(key: key);
+
+  @override
+  State<SeeLocationPage> createState() => _SeeLocationPageState();
+}
+
+class _SeeLocationPageState extends State<SeeLocationPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +34,7 @@ class SeeLocationPage extends StatelessWidget {
       ),
       body: FlutterMap(
         options: MapOptions(
-          initialCenter: location,
+          initialCenter: widget.location,
           initialZoom: 15.0,
         ),
         children: [
@@ -37,12 +45,12 @@ class SeeLocationPage extends StatelessWidget {
           MarkerLayer(
             markers: [
               Marker(
-                point: location,
+                point: widget.location,
                 width: 100,
                 height: 100,
                 child: GestureDetector(
                   onTap: () {
-                    // context.pop();
+                    _showAlertDialog();
                   },
                   child: const Icon(Icons.location_on, color: Colors.red, size: 36),
                 ),
@@ -51,6 +59,33 @@ class SeeLocationPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _showAlertDialog() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Redirect to Google Maps?'),
+          content: const Text('Do you want to open Google Maps to see the route to this entry location?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                GoogleMaps.openGoogleMaps(widget.location.latitude, widget.location.longitude);
+                Navigator.of(context).pop();
+              },
+              child: const Text('Open'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

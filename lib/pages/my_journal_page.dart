@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:plant_spotter_lab2/services/auth_service.dart';
 import 'package:provider/provider.dart';
+import '../model/plant_entry.dart';
 import '../providers/journal_provider.dart';
 import '../widgets/plant_card.dart';
 
 class MyJournalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // final allEntries = context.watch<JournalProvider>().entries;
-    // final entries = allEntries.where((e) => e.user == AuthService.getCurrentUser()).toList();
-    final entries = context.watch<JournalProvider>().getJournalEntries();
 
     return Scaffold(
       appBar: AppBar(
@@ -38,7 +36,7 @@ class MyJournalPage extends StatelessWidget {
                   onPressed: () => context.push('/new_entry'),
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16), // Set the border radius
+                      borderRadius: BorderRadius.circular(16),
                     ),
                   ),
                   child: const Text('+ New Entry'),
@@ -47,13 +45,31 @@ class MyJournalPage extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: entries.length,
-              itemBuilder: (context, index) {
-                final entry = entries[index];
-                return PlantCard(
-                  entry: entry,
-                  onTap: () => context.push('/details', extra: entry),
+            child: FutureBuilder<List<PlantEntry>>(
+              future: context.watch<JournalProvider>().getJournalEntries(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+
+                final entries = snapshot.data ?? [];
+
+                if (entries.isEmpty) {
+                  return const Center(child: Text('No journal entries found.'));
+                }
+
+                return ListView.builder(
+                  itemCount: entries.length,
+                  itemBuilder: (context, index) {
+                    final entry = entries[index];
+                    return PlantCard(
+                      entry: entry,
+                      onTap: () => context.push('/details', extra: entry),
+                    );
+                  },
                 );
               },
             ),

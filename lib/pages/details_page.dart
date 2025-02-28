@@ -15,14 +15,21 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-  late bool byUser;
+  late bool byUser = false;
   late bool isPublic;
 
   @override
   void initState() {
       super.initState();
-      byUser = widget.entry.user == AuthService.getCurrentUser();
+      _initializeUser();
       isPublic = widget.entry.isPublic;
+  }
+
+  void _initializeUser() async {
+    String? currentUser = await AuthService().getUsername();
+    setState(() {
+      byUser = widget.entry.user == currentUser;
+    });
   }
 
   void toggleEntryPrivacy(bool value) {

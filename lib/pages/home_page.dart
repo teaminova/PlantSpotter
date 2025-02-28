@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../services/auth_service.dart';
+import 'login_page.dart';
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -60,7 +63,11 @@ class HomePage extends StatelessWidget {
                 offset: const Offset(3.0, 0.0),
                 child: const Icon(Icons.logout),
               ),
-              onPressed: () => context.push('/login'),
+              onPressed: () {
+                AuthService().logout(context);
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginPage()));
+              }
+              ,
               style: TextButton.styleFrom(
                 backgroundColor: const Color(0xFF6B8E58),
                 foregroundColor: Colors.white,
