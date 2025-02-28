@@ -6,6 +6,7 @@ class PlantEntry {
   final DateTime date;
   final LatLng location;
   final String description;
+  final bool isPublic;
   final String user;
 
   PlantEntry({
@@ -14,6 +15,7 @@ class PlantEntry {
     required this.date,
     required this.location,
     required this.description,
+    required this.isPublic,
     required this.user,
   });
 }

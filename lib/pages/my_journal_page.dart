@@ -8,8 +8,9 @@ import '../widgets/plant_card.dart';
 class MyJournalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final allEntries = context.watch<JournalProvider>().entries;
-    final entries = allEntries.where((e) => e.user == AuthService.getCurrentUser()).toList();
+    // final allEntries = context.watch<JournalProvider>().entries;
+    // final entries = allEntries.where((e) => e.user == AuthService.getCurrentUser()).toList();
+    final entries = context.watch<JournalProvider>().getJournalEntries();
 
     return Scaffold(
       appBar: AppBar(

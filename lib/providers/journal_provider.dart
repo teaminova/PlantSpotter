@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:plant_spotter_lab2/services/auth_service.dart';
 import '../model/plant_entry.dart';
 
 class JournalProvider extends ChangeNotifier {
@@ -10,6 +11,7 @@ class JournalProvider extends ChangeNotifier {
         date: DateTime(2024, 6, 23),
         location: LatLng(42.004971, 21.408303),
         description: "Spotted this stunning rose during my morning walk in Central Park. The soft petals glistened with dew, capturing the beauty of a peaceful sunrise. It reminded me to pause and appreciate the simple moments of life.",
+        isPublic: false,
         user: "jane.doe"
     ),
     PlantEntry(
@@ -18,6 +20,7 @@ class JournalProvider extends ChangeNotifier {
         date: DateTime(2024, 6, 20),
         location: LatLng(42.004971, 21.408303),
         description: "Spotted this stunning tulip during my morning walk in Central Park. The soft petals glistened with dew, capturing the beauty of a peaceful sunrise. It reminded me to pause and appreciate the simple moments of life.",
+        isPublic: true,
         user: "jane.doe"
     ),
     PlantEntry(
@@ -26,6 +29,7 @@ class JournalProvider extends ChangeNotifier {
         date: DateTime(2024, 6, 19),
         location: LatLng(42.004971, 21.408303),
         description: "Spotted this stunning sunflower during my morning walk in Central Park. The soft petals glistened with dew, capturing the beauty of a peaceful sunrise. It reminded me to pause and appreciate the simple moments of life.",
+        isPublic: true,
         user: "james.dean"
     ),
     PlantEntry(
@@ -34,6 +38,7 @@ class JournalProvider extends ChangeNotifier {
         date: DateTime(2024, 5, 28),
         location: LatLng(42.004971, 21.408303),
         description: "Spotted this stunning dahlia during my morning walk in Central Park. The soft petals glistened with dew, capturing the beauty of a peaceful sunrise. It reminded me to pause and appreciate the simple moments of life.",
+        isPublic: true,
         user: "ellie.williams"
     ),
     PlantEntry(
@@ -42,6 +47,7 @@ class JournalProvider extends ChangeNotifier {
         date: DateTime(2024, 5, 17),
         location: LatLng(42.004971, 21.408303),
         description: "Spotted this stunning oak tree during my morning walk in Central Park. The soft leaves glistened with dew, capturing the beauty of a peaceful sunrise. It reminded me to pause and appreciate the simple moments of life.",
+        isPublic: true,
         user: "chris.peters"
     ),
     PlantEntry(
@@ -50,6 +56,7 @@ class JournalProvider extends ChangeNotifier {
         date: DateTime(2024, 5, 15),
         location: LatLng(42.004971, 21.408303),
         description: "Spotted this stunning holly during my morning walk in Central Park. The soft petals glistened with dew, capturing the beauty of a peaceful sunrise. It reminded me to pause and appreciate the simple moments of life.",
+        isPublic: true,
         user: "jane.doe"
     ),
     PlantEntry(
@@ -58,6 +65,7 @@ class JournalProvider extends ChangeNotifier {
         date: DateTime(2024, 4, 16),
         location: LatLng(42.004971, 21.408303),
         description: "Spotted this stunning orchid during my morning walk in Central Park. The soft petals glistened with dew, capturing the beauty of a peaceful sunrise. It reminded me to pause and appreciate the simple moments of life.",
+        isPublic: true,
         user: "chris.peters"
     ),
     PlantEntry(
@@ -66,6 +74,7 @@ class JournalProvider extends ChangeNotifier {
         date: DateTime(2024, 4, 12),
         location: LatLng(42.004971, 21.408303),
         description: "Spotted this stunning daffodil during my morning walk in Central Park. The soft petals glistened with dew, capturing the beauty of a peaceful sunrise. It reminded me to pause and appreciate the simple moments of life.",
+        isPublic: true,
         user: "ellie.williams"
     ),
   ];
@@ -82,9 +91,54 @@ class JournalProvider extends ChangeNotifier {
   //   ),
   // );
 
-  void addEntry(PlantEntry entry) {
-    entries.add(entry);
+  List<PlantEntry> getJournalEntries() {
+    String currentUser = AuthService.getCurrentUser();
+
+    return this.entries
+        .where((e) => e.user == currentUser)
+        .toList()
+        ..sort((a, b) => b.date.compareTo(a.date));
+  }
+
+  List<PlantEntry> getCommunityEntries() {
+    String currentUser = AuthService.getCurrentUser();
+
+    return this.entries
+        .where((e) => e.user != currentUser && e.isPublic)
+        .toList()
+      ..sort((a, b) => b.date.compareTo(a.date));
+  }
+
+  void addEntry(String image, String name, DateTime date, LatLng location, String description, bool isPublic, String user) {
+    PlantEntry newEntry = PlantEntry(
+      image: image, // Placeholder image
+      name: name,
+      date: date,
+      location: location, // Placeholder location
+      description: description,
+      isPublic: isPublic,
+      user: user,
+    );
+
+    entries.add(newEntry);
     notifyListeners();
   }
+
+  void toggleEntryPrivacy(PlantEntry entry, bool value) {
+    int index = entries.indexWhere((e) => e.name == entry.name && e.user == entry.user);
+    if (index != -1) {
+      entries[index] = PlantEntry(
+        image: entries[index].image,
+        name: entries[index].name,
+        date: entries[index].date,
+        location: entries[index].location,
+        description: entries[index].description,
+        isPublic: value, // Update privacy
+        user: entries[index].user,
+      );
+      notifyListeners();
+    }
+  }
+
 }
 

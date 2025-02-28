@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:plant_spotter_lab2/services/auth_service.dart';
 import 'package:provider/provider.dart';
+import '../providers/journal_provider.dart';
 import '../services/image_service.dart';
 
 class NewEntryPage extends StatefulWidget {
@@ -14,6 +17,13 @@ class _NewEntryPageState extends State<NewEntryPage> {
   final _nameController = TextEditingController();
   final _dateController = TextEditingController();
   final _descriptionController = TextEditingController();
+  bool _isPublic = false;
+
+  void toggleEntryPrivacy(bool value) {
+    setState(() {
+      _isPublic = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +167,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                   );
                   if (selectedDate != null) {
                     setState(() {
-                      _dateController.text = selectedDate.toLocal().toString().split(' ')[0];
+                      // _dateController.text = selectedDate.toLocal().toString().split(' ')[0];
+                      _dateController.text = selectedDate.toIso8601String().split('T')[0];
                     });
                   }
                 },
@@ -220,13 +231,71 @@ class _NewEntryPageState extends State<NewEntryPage> {
                   return null;
                 },
               ),
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("PRIVATE", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF6B8E58))),
+                    const SizedBox(width: 8),
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      width: 50,
+                      height: 26,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: _isPublic ? Color(0xFF6B8E58) : Colors.black12,
+                      ),
+                      child: Stack(
+                        alignment: _isPublic ? Alignment.centerRight : Alignment.centerLeft,
+                        children: [
+                          Positioned(
+                            left: _isPublic ? 25 : 3,
+                            child: GestureDetector(
+                              onTap: () => toggleEntryPrivacy(!_isPublic),
+                              child: Container(
+                                width: 22,
+                                height: 22,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withValues(alpha: 0.2),
+                                      blurRadius: 3,
+                                      offset: const Offset(0, 1),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    const Text("PUBLIC", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF6B8E58))),
+                  ],
+                ),
+              ),
               const Spacer(),
               SizedBox(
                 width: 200,
                 child: TextButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // Save the entry action here
+                      final provider = Provider.of<JournalProvider>(context, listen: false);
+                      provider.addEntry(
+                        "assets/daffodil.png",
+                        _nameController.text,
+                        DateTime.parse(_dateController.text),
+                        LatLng(0, 0),
+                        _descriptionController.text,
+                        _isPublic,
+                        AuthService.getCurrentUser(),
+                      );
+
                       context.pop();
                     }
                   },

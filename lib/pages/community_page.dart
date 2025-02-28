@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../providers/journal_provider.dart';
+import '../services/auth_service.dart';
 import '../widgets/plant_card.dart';
 
 class CommunityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final entries = context.watch<JournalProvider>().entries;
+    // final allEntries = context.watch<JournalProvider>().entries;
+    // final entries = allEntries.where((e) => e.user != AuthService.getCurrentUser() && e.isPublic).toList();
+    final entries = context.watch<JournalProvider>().getCommunityEntries();
 
     return Scaffold(
       appBar: AppBar(
