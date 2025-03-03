@@ -18,6 +18,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
   final _dateController = TextEditingController();
   final _descriptionController = TextEditingController();
   bool _isPublic = false;
+  LatLng? _selectedLocation;
+  bool noLocationSetError = false;
 
   void toggleEntryPrivacy(bool value) {
     setState(() {
@@ -185,7 +187,15 @@ class _NewEntryPageState extends State<NewEntryPage> {
                   SizedBox(
                     width: 200,
                     child: TextButton(
-                      onPressed: () => context.push('/set_location'),
+                      onPressed: () async {
+                        final selectedLocation = await context.push<LatLng>('/set_location');
+                        if (selectedLocation != null) {
+                          setState(() {
+                            _selectedLocation = selectedLocation;
+                            noLocationSetError = false;
+                          });
+                        }
+                      },
                       style: TextButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
@@ -195,9 +205,20 @@ class _NewEntryPageState extends State<NewEntryPage> {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  const Text('Location not set'),
+                  Text(_selectedLocation != null
+                      ? '${_selectedLocation!.latitude}\n${_selectedLocation!.longitude}'
+                      : 'Location not set',
+                      style: TextStyle(color: Color(0xFF6B8E58))),
                 ],
               ),
+              if (noLocationSetError == true)
+                const Padding(
+                  padding: EdgeInsets.only(top: 4),
+                  child: Text(
+                    'Please set a location',
+                    style: TextStyle(color: Color(0xFFB9362F), fontSize: 12),
+                  ),
+                ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _descriptionController,
@@ -284,13 +305,21 @@ class _NewEntryPageState extends State<NewEntryPage> {
                 width: 200,
                 child: TextButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
+                    setState(() {});
+
+                    if (_selectedLocation == null) {
+                      setState(() {
+                        noLocationSetError = true;
+                      });
+                    }
+
+                    if (_formKey.currentState!.validate() && _selectedLocation != null) {
                       final provider = Provider.of<JournalProvider>(context, listen: false);
                       provider.addEntry(
                         "assets/daffodil.png",
                         _nameController.text,
                         DateTime.parse(_dateController.text),
-                        LatLng(0, 0),
+                        _selectedLocation!,
                         _descriptionController.text,
                         _isPublic,
                       );
