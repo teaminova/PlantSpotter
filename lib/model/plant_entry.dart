@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:latlong2/latlong.dart';
 
 class PlantEntry {
@@ -18,4 +19,16 @@ class PlantEntry {
     required this.isPublic,
     required this.user,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'image': image,
+      'name': name,
+      'date': Timestamp.fromDate(date),
+      'location': GeoPoint(location.latitude, location.longitude),
+      'description': description,
+      'isPublic': isPublic,
+      'user': user,
+    };
+  }
 }

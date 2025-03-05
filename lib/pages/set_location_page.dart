@@ -35,6 +35,11 @@ class _SetLocationPageState extends State<SetLocationPage> {
     setState(() => _isLoading = false);
   }
 
+  void _setDefaultLocation() {
+    setState(() => _locationError = false);
+    setState(() => _isLoading = false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +59,11 @@ class _SetLocationPageState extends State<SetLocationPage> {
                   ElevatedButton(
                     onPressed: _fetchCurrentLocation,
                     child: const Text("Retry"),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: _setDefaultLocation,
+                    child: const Text("Try again later"),
                   ),
                 ],
               ),

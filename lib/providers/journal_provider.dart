@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:plant_spotter_lab2/services/auth_service.dart';
 import '../model/plant_entry.dart';
 
 class JournalProvider extends ChangeNotifier {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   List<PlantEntry> entries = [
     PlantEntry(
         image: "assets/rose.png",
@@ -79,6 +82,44 @@ class JournalProvider extends ChangeNotifier {
     ),
   ];
 
+  // JournalProvider() {
+  //   fetchEntries();
+  // }
+
+  Future<void> fetchEntries() async {
+    // fetch from Firebase
+    try {
+      final snapshot = await _firestore.collection('entries').get();
+      entries.clear();
+      for (var doc in snapshot.docs) {
+        final data = doc.data();
+
+        LatLng? location;
+        if (data['location'] != null) {
+          final geoPoint = data['location'] as GeoPoint;
+          location = LatLng(geoPoint.latitude, geoPoint.longitude);
+        }
+
+        entries.add(
+          PlantEntry(
+            image: data['image'] ?? '',
+            name: data['name'] ?? 'Unknown',
+            date: (data['date'] as Timestamp).toDate(),
+            location: location ?? LatLng(0.0, 0.0),
+            description: data['description'] ?? '',
+            isPublic: data['isPublic'] ?? false,
+            user: data['user'] ?? '',
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error fetching entries: $e');
+    }
+    // isLoading = false;
+    // notifyListeners();
+  }
+
+
   // List.generate(
   //   10,
   //       (index) => PlantEntry(
@@ -92,6 +133,8 @@ class JournalProvider extends ChangeNotifier {
   // );
 
   Future<List<PlantEntry>> getJournalEntries() async {
+    fetchEntries();
+
     String? currentUser = await AuthService().getUsername();
 
     if (currentUser == null) return [];
@@ -103,6 +146,8 @@ class JournalProvider extends ChangeNotifier {
   }
 
   Future<List<PlantEntry>> getCommunityEntries() async {
+    fetchEntries();
+
     String? currentUser = await AuthService().getUsername();
 
     if (currentUser == null) {
@@ -136,6 +181,13 @@ class JournalProvider extends ChangeNotifier {
     );
 
     entries.add(newEntry);
+
+    try {
+      await _firestore.collection('entries').add(newEntry.toJson());
+    } catch (e) {
+      print('Error adding new entry to Firebase: $e');
+    }
+
     notifyListeners();
   }
 
