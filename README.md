@@ -76,7 +76,7 @@ On the Details Page, there is an option to see the location of the entry, which 
 On the Details Page, there is also an option to learn more about the plant from the entry, by navigating to the Learn More Page, where information fetched from Wikipedia is displayed (image and summary).
 
 
-## Images of the App
+## Page Layout
 
 | Register Page                                                             | Login Page                                                          |
 | ------------------------------------------------------------------------- | ------------------------------------------------------------------- |
