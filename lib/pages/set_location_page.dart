@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:plant_spotter_lab2/services/location_service.dart';
+import '../widgets/info_card.dart';
 
 class SetLocationPage extends StatefulWidget {
   @override
@@ -108,31 +109,7 @@ class _SetLocationPageState extends State<SetLocationPage> {
             bottom: 100,
             left: 20,
             right: 20,
-            child: Card(
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              elevation: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: [
-                    Icon(Icons.info_outline, color: Color(0xFF6B8E58)),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        'Click on the map to place a pin on your desired location.',
-                        style: TextStyle(
-                          color: Color(0xFF6B8E58),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            child: InfoCard(info: 'Click on the map to place a pin on your desired location.'),
           ),
           Positioned(
             bottom: 30,

@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import '../utils/google_maps.dart';
+import '../widgets/info_card.dart';
 
 class SeeLocationPage extends StatefulWidget {
   final LatLng location;
@@ -55,6 +56,12 @@ class _SeeLocationPageState extends State<SeeLocationPage> {
                 ),
               ),
             ],
+          ),
+          Positioned(
+            bottom: 30,
+            left: 20,
+            right: 20,
+            child: InfoCard(info: 'Click on the pin for more info.'),
           ),
         ],
       ),
