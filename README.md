@@ -2,7 +2,7 @@
 
 Mobile app for journaling and sharing plant adventures.
 
-This Flutter App is used to share plants that you can find in nature. The user fills his own Journal with entries of plants (image of plant, plant name, date, location, description, option to make entry public), but can also see others' entries on a community page. For every entry there is an option to see it's location and navigate to it. There is also an option to learn more about the plant by getting information from Wikipedia.
+This Flutter App allows you to share plants that you find in nature. The user fills a Journal with entries of plants (image of plant, plant name, date, location, description, option to make entry public), but can also see others' entries on a community page. For every entry, there is an option to see it's location and navigate to it. There is also an option to learn more about the plant by getting information from Wikipedia.
 
 
 ## Technologies used
@@ -44,7 +44,7 @@ The user can also successfuly log out.
 
 ### Fetching Entries
 
-All entries are kept in a database collection named 'entries' (Firebase Cloud Firestore) and fetched when needed. For the My Journal Page all entries by the currently logged in user are displayed, while all others (public entries) are displayed on the Community Page. On these pages the entries are displayed as cards with an image of the plant, the plant's name, the date and the creator of the entry.
+All entries are kept in a database collection named 'entries' (Firebase Cloud Firestore) and fetched when needed. On the My Journal Page all entries by the currently logged in user are displayed, while all others (public entries) are displayed on the Community Page. The entries on these pages are displayed as cards with an image of the plant, the plant's name, the date and the creator of the entry.
 
 ### Creating New Entry
 
