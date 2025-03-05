@@ -29,6 +29,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final imageProvider = Provider.of<ImagesProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -57,15 +59,24 @@ class _NewEntryPageState extends State<NewEntryPage> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
+                      image: imageProvider.image != null
+                        ? DecorationImage(
+                            image: FileImage(imageProvider.image!),
+                            fit: BoxFit.cover,
+                          )
+                          : null,
                     ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.image,
-                        size: 100,
-                        color: Color(0xFFDFF2D4),
-                      ),
-                    ),
+                    child: imageProvider.image == null
+                      ? const Center(
+                        child: Icon(
+                          Icons.image,
+                          size: 100,
+                          color: Color(0xFFDFF2D4),
+                        ),
+                      )
+                        : null,
                   ),
+
                   const SizedBox(width: 16),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -74,7 +85,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                         width: 200,
                         child: TextButton(
                           onPressed: () async {
-                            final imagePath = await ImagesProvider().takePhoto();
+                            // final imagePath = await ImagesProvider().takePhoto();
                             // if (imagePath != null) {
                             //   context.pop();
                             // }
@@ -91,7 +102,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       SizedBox(
                         width: 200,
                         child: TextButton(
-                          onPressed: () => context.push('/gallery'),
+                          // onPressed: () => context.push('/gallery'),
+                          onPressed: () => imageProvider.pickImage(),
                           style: TextButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
