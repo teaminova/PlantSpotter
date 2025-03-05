@@ -82,9 +82,9 @@ class JournalProvider extends ChangeNotifier {
     ),
   ];
 
-  // JournalProvider() {
-  //   fetchEntries();
-  // }
+  JournalProvider() {
+    fetchEntries();
+  }
 
   Future<void> fetchEntries() async {
     // fetch from Firebase
@@ -118,19 +118,6 @@ class JournalProvider extends ChangeNotifier {
     // isLoading = false;
     // notifyListeners();
   }
-
-
-  // List.generate(
-  //   10,
-  //       (index) => PlantEntry(
-  //     image: "assets/placeholder.png",
-  //     name: "Plant $index",
-  //     date: DateTime.now().subtract(Duration(days: index)),
-  //     location: LatLng(0, 0),
-  //     description: "Description for Plant $index",
-  //     user: "User $index",
-  //   ),
-  // );
 
   Future<List<PlantEntry>> getJournalEntries() async {
     fetchEntries();
@@ -180,30 +167,49 @@ class JournalProvider extends ChangeNotifier {
       user: currentUser,
     );
 
-    entries.add(newEntry);
-
     try {
       await _firestore.collection('entries').add(newEntry.toJson());
     } catch (e) {
       print('Error adding new entry to Firebase: $e');
     }
 
+    entries.add(newEntry);
+
     notifyListeners();
   }
 
-  void toggleEntryPrivacy(PlantEntry entry, bool value) {
-    int index = entries.indexWhere((e) => e.name == entry.name && e.user == entry.user);
-    if (index != -1) {
-      entries[index] = PlantEntry(
-        image: entries[index].image,
-        name: entries[index].name,
-        date: entries[index].date,
-        location: entries[index].location,
-        description: entries[index].description,
-        isPublic: value, // Update privacy
-        user: entries[index].user,
-      );
-      notifyListeners();
+  Future<void> toggleEntryPrivacy(PlantEntry entry, bool value) async {
+    try {
+      QuerySnapshot query = await _firestore
+          .collection('entries')
+          .where('name', isEqualTo: entry.name)
+          .where('user', isEqualTo: entry.user)
+          .get();
+
+      if (query.docs.isNotEmpty) {
+        String docId = query.docs.first.id;
+        await _firestore.collection('entries').doc(docId).update(
+            {'isPublic': value});
+
+        int index = entries.indexWhere((e) =>
+        e.name == entry.name && e.user == entry.user);
+        if (index != -1) {
+          PlantEntry updatedEntry = PlantEntry(
+            image: entries[index].image,
+            name: entries[index].name,
+            date: entries[index].date,
+            location: entries[index].location,
+            description: entries[index].description,
+            isPublic: value,
+            user: entries[index].user,
+          );
+
+          entries[index] = updatedEntry;
+          notifyListeners();
+        }
+      }
+    } catch (e) {
+      print('Error updating entry privacy: $e');
     }
   }
 
