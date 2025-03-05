@@ -20,6 +20,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
   bool _isPublic = false;
   LatLng? _selectedLocation;
   bool noLocationSetError = false;
+  bool noImageSetError = false;
 
   void toggleEntryPrivacy(bool value) {
     setState(() {
@@ -84,7 +85,13 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       SizedBox(
                         width: 200,
                         child: TextButton(
-                          onPressed: () => imageProvider.takePhoto(),
+                          // onPressed: () => imageProvider.takePhoto(),
+                          onPressed: () {
+                            imageProvider.takePhoto();
+                            setState(() {
+                              noImageSetError = false;
+                            });
+                          },
                           style: TextButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
@@ -97,7 +104,13 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       SizedBox(
                         width: 200,
                         child: TextButton(
-                          onPressed: () => imageProvider.pickImage(),
+                          // onPressed: () => imageProvider.pickImage(),
+                          onPressed: () {
+                            imageProvider.pickImage();
+                            setState(() {
+                              noImageSetError = false;
+                            });
+                          },
                           style: TextButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
@@ -110,6 +123,14 @@ class _NewEntryPageState extends State<NewEntryPage> {
                   ),
                 ],
               ),
+              if (noImageSetError == true)
+                const Padding(
+                  padding: EdgeInsets.only(top: 4),
+                  child: Text(
+                    'Please set an image',
+                    style: TextStyle(color: Color(0xFFB9362F), fontSize: 12),
+                  ),
+                ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _nameController,
@@ -175,7 +196,6 @@ class _NewEntryPageState extends State<NewEntryPage> {
                   );
                   if (selectedDate != null) {
                     setState(() {
-                      // _dateController.text = selectedDate.toLocal().toString().split(' ')[0];
                       _dateController.text = selectedDate.toIso8601String().split('T')[0];
                     });
                   }
@@ -319,7 +339,13 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       });
                     }
 
-                    if (_formKey.currentState!.validate() && _selectedLocation != null) {
+                    if (imageProvider.image == null) {
+                      setState(() {
+                        noImageSetError = true;
+                      });
+                    }
+
+                    if (_formKey.currentState!.validate() && _selectedLocation != null && imageProvider.image != null) {
                       final provider = Provider.of<JournalProvider>(context, listen: false);
                       provider.addEntry(
                         "assets/daffodil.png",

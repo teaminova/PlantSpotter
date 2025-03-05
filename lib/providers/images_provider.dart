@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
 
 class ImagesProvider extends ChangeNotifier {
   File? _img = null;
@@ -38,6 +40,26 @@ class ImagesProvider extends ChangeNotifier {
     } catch (e) {
       print('Error taking photo: $e');
     }
+  }
+
+  Future<String?> uploadImage() async {
+    if (_img == null) {
+      return null;
+    }
+    notifyListeners();
+    try {
+      String fileName = path.basename(_img!.path);
+      Reference storageRef = FirebaseStorage.instance.ref().child('plantImages/$fileName');
+      await storageRef.putFile(_img!);
+      String downloadUrl = await storageRef.getDownloadURL();
+      // await FirebaseAuth.instance.currentUser?.updatePhotoURL(downloadUrl);
+      return downloadUrl;
+    } catch (e) {
+      print('Error uploading image: $e');
+    } finally {
+      notifyListeners();
+    }
+    return null;
   }
 
 }
