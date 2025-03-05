@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../services/wiki_service.dart';
+import '../widgets/wiki_card.dart';
 
 class LearnMorePage extends StatelessWidget {
   final String plantName;
@@ -55,45 +56,8 @@ class LearnMorePage extends StatelessWidget {
                   const SizedBox(height: 16),
                   Text(plantName, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF6B8E58))),
                   const SizedBox(height: 8),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'From Wikipedia',
-                            style: const TextStyle(
-                              color: Color(0xFF6B8E58),
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              description,
-                              style: const TextStyle(
-                                color: Color(0xFF6B8E58),
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                          if (description.isEmpty)
-                            Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'No information available.',
-                                style: const TextStyle(
-                                  color: Color(0xFF6B8E58),
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
+                  WikiCard(
+                    info: description,
                   ),
                 ],
               ),

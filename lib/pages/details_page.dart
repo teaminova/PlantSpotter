@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../model/plant_entry.dart';
 import '../providers/journal_provider.dart';
 import '../services/auth_service.dart';
+import '../widgets/plant_details_card.dart';
 import '../widgets/privacy_switch.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -79,41 +80,8 @@ class _DetailsPageState extends State<DetailsPage> {
             const SizedBox(height: 16),
             Text(widget.entry.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF6B8E58))),
             const SizedBox(height: 8),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.entry.date.toLocal().toString().split(' ')[0],
-                      style: const TextStyle(
-                        color: Color(0xFF6B8E58),
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      widget.entry.description,
-                      style: const TextStyle(
-                        color: Color(0xFF6B8E58),
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        widget.entry.user,
-                        style: const TextStyle(
-                          color: Color(0xFF6B8E58),
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            PlantDetailsCard(
+              entry: widget.entry,
             ),
             const SizedBox(height: 16),
             SizedBox(
