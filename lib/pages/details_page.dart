@@ -109,15 +109,6 @@ class _DetailsPageState extends State<DetailsPage> {
                 child: const Text('Learn More'),
               ),
             ),
-            // TextButton(
-            //   onPressed: () => context.push('/see_location', extra: entry.location),
-            //   child: const Text('See Location'),
-            // ),
-            // const SizedBox(height: 8),
-            // TextButton(
-            //   onPressed: () => context.push('/learn_more', extra: entry.name),
-            //   child: const Text('Learn More'),
-            // ),
           ],
         ),
       ),

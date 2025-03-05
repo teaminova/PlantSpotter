@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../model/plant_entry.dart';
 
 class WikiCard extends StatelessWidget {
   final String info;

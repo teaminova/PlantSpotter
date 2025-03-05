@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
                       onPressed: () => context.push('/journal'),
                       style: TextButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16), // Set the border radius
+                          borderRadius: BorderRadius.circular(16),
                         ),
                       ),
                       child: const Text('My Journal'),
@@ -44,7 +44,7 @@ class HomePage extends StatelessWidget {
                       onPressed: () => context.push('/community'),
                       style: TextButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16), // Set the border radius
+                          borderRadius: BorderRadius.circular(16),
                         ),
                       ),
                       child: const Text('Community'),

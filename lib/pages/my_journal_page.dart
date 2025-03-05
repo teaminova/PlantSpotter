@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:plant_spotter_lab2/services/auth_service.dart';
 import 'package:provider/provider.dart';
 import '../model/plant_entry.dart';
 import '../providers/journal_provider.dart';

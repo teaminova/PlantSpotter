@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:plant_spotter_lab2/services/auth_service.dart';
 import 'package:provider/provider.dart';
 import '../providers/journal_provider.dart';
 import '../providers/images_provider.dart';
@@ -88,7 +87,6 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       SizedBox(
                         width: 200,
                         child: TextButton(
-                          // onPressed: () => imageProvider.takePhoto(),
                           onPressed: () {
                             imageProvider.takePhoto();
                             setState(() {
@@ -108,7 +106,6 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       SizedBox(
                         width: 200,
                         child: TextButton(
-                          // onPressed: () => imageProvider.pickImage(),
                           onPressed: () {
                             imageProvider.pickImage();
                             setState(() {

@@ -14,7 +14,6 @@ class JournalProvider extends ChangeNotifier {
   }
 
   Future<void> fetchEntries() async {
-    // fetch from Firebase
     try {
       final snapshot = await _firestore.collection('entries').get();
       entries.clear();

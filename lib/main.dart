@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:plant_spotter_lab2/providers/journal_provider.dart';
 import 'package:plant_spotter_lab2/router.dart';
 import 'package:plant_spotter_lab2/providers/images_provider.dart';

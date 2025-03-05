@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 import '../services/wiki_service.dart';
 import '../widgets/wiki_card.dart';
@@ -12,7 +11,6 @@ class LearnMorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final String wikiUrl = 'https://en.wikipedia.org/wiki/$plantName';
 
     return Scaffold(
       appBar: AppBar(
@@ -65,10 +63,6 @@ class LearnMorePage extends StatelessWidget {
           }
         },
       ),
-      // WebView(
-      //   initialUrl: wikiUrl,
-      //   javascriptMode: JavascriptMode.unrestricted,
-      // ),
     );
   }
 }

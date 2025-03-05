@@ -32,7 +32,7 @@ class LocationService {
       return LatLng(position.latitude, position.longitude);
     } catch (e) {
       print("Error getting location: $e");
-      return null; // Return null on error
+      return null;
     }
   }
 }

@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../model/plant_entry.dart';
 import '../providers/journal_provider.dart';
-import '../services/auth_service.dart';
 import '../widgets/plant_card.dart';
 
 class CommunityPage extends StatelessWidget {

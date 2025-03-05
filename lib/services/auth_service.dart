@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plant_spotter_lab2/services/shared_pref.dart';
-
 import '../pages/home_page.dart';
 import '../pages/login_page.dart';
 
@@ -37,7 +36,7 @@ class AuthService{
       Future.delayed(const Duration(seconds: 2), () {
         Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (_) => HomePage()));
       });
-      return null; // No error
+      return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         return 'No user found for that email.';
