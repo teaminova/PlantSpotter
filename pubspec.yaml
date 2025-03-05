@@ -78,6 +78,8 @@ flutter:
     - assets/oak.png
     - assets/holly.png
     - assets/daffodil.png
+    - assets/pine.png
+    - assets/camera_photo.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

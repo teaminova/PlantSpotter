@@ -21,6 +21,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
   LatLng? _selectedLocation;
   bool noLocationSetError = false;
   bool noImageSetError = false;
+  bool imageFromGallery = false;
 
   void toggleEntryPrivacy(bool value) {
     setState(() {
@@ -37,6 +38,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () {
+            imageProvider.removeImage();
             context.pop();
           },
           style: TextButton.styleFrom(
@@ -90,6 +92,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                             imageProvider.takePhoto();
                             setState(() {
                               noImageSetError = false;
+                              imageFromGallery = false;
                             });
                           },
                           style: TextButton.styleFrom(
@@ -109,6 +112,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                             imageProvider.pickImage();
                             setState(() {
                               noImageSetError = false;
+                              imageFromGallery = true;
                             });
                           },
                           style: TextButton.styleFrom(
@@ -348,13 +352,15 @@ class _NewEntryPageState extends State<NewEntryPage> {
                     if (_formKey.currentState!.validate() && _selectedLocation != null && imageProvider.image != null) {
                       final provider = Provider.of<JournalProvider>(context, listen: false);
                       provider.addEntry(
-                        "assets/daffodil.png",
+                        imageFromGallery ? "assets/pine.png" : "assets/camera_photo.png",
                         _nameController.text,
                         DateTime.parse(_dateController.text),
                         _selectedLocation!,
                         _descriptionController.text,
                         _isPublic,
                       );
+
+                      imageProvider.removeImage();
 
                       context.pop();
                     }

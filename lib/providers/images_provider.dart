@@ -62,6 +62,10 @@ class ImagesProvider extends ChangeNotifier {
     return null;
   }
 
+  void removeImage() {
+    _img = null;
+  }
+
 }
 
 
