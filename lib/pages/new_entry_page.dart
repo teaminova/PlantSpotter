@@ -84,12 +84,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       SizedBox(
                         width: 200,
                         child: TextButton(
-                          onPressed: () async {
-                            // final imagePath = await ImagesProvider().takePhoto();
-                            // if (imagePath != null) {
-                            //   context.pop();
-                            // }
-                          },
+                          onPressed: () => imageProvider.takePhoto(),
                           style: TextButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
@@ -102,7 +97,6 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       SizedBox(
                         width: 200,
                         child: TextButton(
-                          // onPressed: () => context.push('/gallery'),
                           onPressed: () => imageProvider.pickImage(),
                           style: TextButton.styleFrom(
                             shape: RoundedRectangleBorder(

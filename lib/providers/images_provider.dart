@@ -24,6 +24,21 @@ class ImagesProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> takePhoto() async {
+    final ImagePicker picker = ImagePicker();
+    try {
+      final photo = await picker.pickImage(source: ImageSource.camera);
+      if (photo != null) {
+        _img = File(photo.path);
+        print(_img!.path);
+        notifyListeners();
+      } else {
+        print('No image taken.');
+      }
+    } catch (e) {
+      print('Error taking photo: $e');
+    }
+  }
 
 }
 
