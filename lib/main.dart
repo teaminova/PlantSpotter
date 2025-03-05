@@ -3,7 +3,6 @@ import 'package:plant_spotter_lab2/providers/journal_provider.dart';
 import 'package:plant_spotter_lab2/router.dart';
 import 'package:plant_spotter_lab2/providers/images_provider.dart';
 import 'package:provider/provider.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
