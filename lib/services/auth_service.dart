@@ -9,29 +9,27 @@ import '../pages/login_page.dart';
 class AuthService{
   final SharedPref _sharedPref = SharedPref.instance;
 
-
   Future<String?> register(String email, String password, BuildContext context) async {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
       _sharedPref.setEmail(email);
       await Future.delayed(const Duration(seconds: 1));
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
-      return 'Success';
+      return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         return 'The password provided is too weak.';
       } else if (e.code == 'email-already-in-use') {
         return 'The account already exists for that email.';
       } else {
-        return e.message;
+        return e.message ?? 'An error occurred. Please try again.';
       }
     } catch (e) {
-      return e.toString();
+      return 'An unexpected error occurred: ${e.toString()}';
     }
-
   }
 
-  Future<String?> login(String email, String password, BuildContext context) async{
+  Future<String?> login(String email, String password, BuildContext context) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       _sharedPref.setEmail(email);
@@ -39,19 +37,21 @@ class AuthService{
       Future.delayed(const Duration(seconds: 2), () {
         Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (_) => HomePage()));
       });
-      return 'Success';
+      return null; // No error
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
-        return 'Invalid login credentials.';
+      if (e.code == 'user-not-found') {
+        return 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        return 'Incorrect password. Please try again.';
+      } else if (e.code == 'invalid-email') {
+        return 'Invalid email format.';
       } else {
-        return e.message;
+        return e.message ?? 'An error occurred. Please try again.';
       }
-    }
-    catch (e) {
-      return e.toString();
+    } catch (e) {
+      return 'An unexpected error occurred: ${e.toString()}';
     }
   }
-
 
   Future<void> logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut().then((value) {

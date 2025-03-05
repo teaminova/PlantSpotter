@@ -14,6 +14,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  String? _errorMessage;
+
   @override
   void dispose() {
     super.dispose();
@@ -116,17 +118,38 @@ class _LoginPageState extends State<LoginPage> {
                   return null;
                 },
               ),
+
+              if (_errorMessage != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  child: Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Color(0xFFB9362F), fontSize: 14),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+
               const SizedBox(height: 130),
               SizedBox(
                 width: 150,
                 child: TextButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      await AuthService().login(_emailController.text, _passwordController.text, context);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Please fill input')),
+                      String? errorMessage = await AuthService().login(
+                        _emailController.text,
+                        _passwordController.text,
+                        context,
                       );
+
+                      if (errorMessage != null) {
+                        setState(() {
+                          _errorMessage = errorMessage;
+                        });
+                      } else {
+                        setState(() {
+                          _errorMessage = null;
+                        });
+                      }
                     }
                   },
                   style: TextButton.styleFrom(
@@ -139,7 +162,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 8),
               TextButton(
-                // onPressed: () => context.go('/register'),
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegisterPage())),
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.transparent,
