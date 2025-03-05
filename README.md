@@ -5,7 +5,7 @@ Mobile app for journaling and sharing plant adventures.
 This Flutter App allows you to share plants that you find in nature. The user fills a Journal with entries of plants (image of plant, plant name, date, location, description, option to make entry public), but can also see others' entries on a community page. For every entry, there is an option to see it's location and navigate to it. There is also an option to learn more about the plant by getting information from Wikipedia.
 
 
-## Technologies used
+## Technologies
 
 Technologies used for this project:
 
