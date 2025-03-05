@@ -78,35 +78,22 @@ On the Details Page, there is also an option to learn more about the plant from 
 
 ## Images of the App
 
-### Register Page
-![Register.png](app_page_images%2FRegister.png)
+| Register Page                                                             | Login Page                                                          |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| <img src="app_page_images/Register.png" alt="Register Page" width="200"/> | <img src="app_page_images/Login.png" alt="Login Page" width="200"/> |
 
-### Login Page
-![Login.png](app_page_images%2FLogin.png)
+| Home Page                                                         | My Journal Page                                                              | Community Page                                                              |
+| ----------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| <img src="app_page_images/Home.png" alt="Home Page" width="200"/> | <img src="app_page_images/MyJournal.png" alt="My Journal Page" width="200"/> | <img src="app_page_images/Community.png" alt="Community Page" width="200"/> |
 
-### Home Page
-![Home.png](app_page_images%2FHome.png)
+| Details Page                                                            | See Location Page                                                                | Learn More Page                                                         |
+| ----------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| <img src="app_page_images/Details.png" alt="Details Page" width="200"/> | <img src="app_page_images/SeeLocation.png" alt="See Location Page" width="200"/> | <img src="app_page_images/LearnMore.png" alt="Learn More Page" width="200"/> |
 
-### My Journal Page
-![MyJournal.png](app_page_images%2FMyJournal.png)
+| New Entry Page                                                             | Set Location Page                                                                |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| <img src="app_page_images/NewEntry.png" alt="New Entry Page" width="200"/> | <img src="app_page_images/SetLocation.png" alt="Set Location Page" width="200"/> |
 
-### Community Page
-![Community.png](app_page_images%2FCommunity.png)
-
-### New Entry Page
-![NewEntry.png](app_page_images%2FNewEntry.png)
-
-### Set Location Page
-![SetLocation.png](app_page_images%2FSetLocation.png)
-
-### Details Page
-![Details.png](app_page_images%2FDetails.png)
-
-### See Location Page
-![SeeLocation.png](app_page_images%2FSeeLocation.png)
-
-### Learn More Page
-![LearnMore.png](app_page_images%2FLearnMore.png)
 
 ## Figma Prototype
 
